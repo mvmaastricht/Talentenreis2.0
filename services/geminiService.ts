@@ -1,16 +1,28 @@
 import { UserProgress, ReflectionAnswers } from "../types";
 import { ROUTES } from "../constants";
 
-// Retrieve the OpenRouter API key from environment variables (Vercel)
-const apiKey = process.env.OPENROUTER_API_KEY || '';
+// Safe way to retrieve the API key that works in both Vite and general Node environments
+const getApiKey = () => {
+  // First check what Vite has injected via 'define'
+  // @ts-ignore
+  if (typeof process !== 'undefined' && process.env && process.env.OPENROUTER_API_KEY) {
+    // @ts-ignore
+    return process.env.OPENROUTER_API_KEY;
+  }
+  // Fallback to import.meta.env for standard Vite behavior
+  return import.meta.env.VITE_OPENROUTER_API_KEY || '';
+};
+
+const apiKey = getApiKey();
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 // Using a fast, cost-effective model suitable for Dutch text.
 // Google's Gemini Flash via OpenRouter is excellent for this.
 const MODEL = "google/gemini-2.0-flash-001";
 
-const formatField = (field: string[], custom: string) => {
-  const combined = [...field];
+const formatField = (field: string[] = [], custom: string = "") => {
+  const safeField = Array.isArray(field) ? field : [];
+  const combined = [...safeField];
   if (custom) combined.push(custom);
   return combined.join(", ");
 };

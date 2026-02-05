@@ -198,8 +198,19 @@ function App() {
       const saved = localStorage.getItem('talentenreis_data');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.reflection) setReflection(parsed.reflection);
-        if (parsed.progress) setProgress(parsed.progress);
+        if (parsed.reflection) {
+          setReflection(prev => ({
+            ...prev,
+            ...parsed.reflection,
+            customAnswers: { ...(prev.customAnswers || {}), ...(parsed.reflection.customAnswers || {}) }
+          }));
+        }
+        if (parsed.progress) {
+          setProgress(prev => ({
+            ...prev,
+            ...parsed.progress
+          }));
+        }
       }
     } catch (e) {
       console.error("Failed to load data", e);
