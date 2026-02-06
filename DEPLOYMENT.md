@@ -8,19 +8,13 @@ Deze handleiding helpt je om de Talentenreis-app veilig te deployen op een hosti
 
 ### Lokale Ontwikkeling
 
-1. Kopieer `.env.example` naar `.env`:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Vul je OpenRouter API-sleutel in:
+1. Vul je OpenRouter API-sleutel in:
 
    ```env
    OPENROUTER_API_KEY=sk-or-v1-jouw-sleutel-hier
    ```
 
-3. Start de development server:
+2. Start de development server:
 
    ```bash
    npm install
